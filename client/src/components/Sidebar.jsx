@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, UserPlus, Users, ClipboardList, Wallet,
   CalendarCheck, FileText, BookOpen, Receipt, Briefcase, ShieldCheck,
+  History, BarChart3,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -22,6 +23,8 @@ const menu = [
   { section: 'Fees', items: [
     { to: '/fees/structure', label: 'Fee Structure', icon: Receipt, roles: FEES },
     { to: '/fees/collection', label: 'Fee Collection', icon: Wallet, roles: FEES },
+    { to: '/fees/payments', label: 'Payment History', icon: History, roles: FEES },
+    { to: '/fees/reports', label: 'Reports', icon: BarChart3, roles: FEES },
   ]},
   { section: 'Academics', items: [
     { to: '/academics/attendance', label: 'Attendance', icon: CalendarCheck, roles: ACADEMIC },

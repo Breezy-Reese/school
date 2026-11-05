@@ -20,6 +20,7 @@ import Placeholder from './pages/Placeholder';
 import Receipt from './pages/Receipt';
 import Statement from './pages/Statement';
 import Payments from './pages/Payments';
+import Reports from './pages/Reports';
 
 export default function App() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="fees/receipt/:receipt" element={<Receipt />} />
   <Route path="fees/statement/:admNo" element={<Statement />} />
             <Route path="fees/payments" element={<Payments />} />
+            <Route path="fees/reports" element={<Reports />} />
             </Route>
 
             {/* fees */}
