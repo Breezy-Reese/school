@@ -9,14 +9,17 @@ export const protect = async (req, res, next) => {
   try {
     const { id } = jwt.verify(header.split(' ')[1], process.env.JWT_SECRET);
     req.user = await User.findById(id);
-    if (!req.user) return res.status(401).json({ message: 'User not found' });
+    if (!req.user || req.user.active === false) {
+      return res.status(401).json({ message: 'User not found or deactivated' });
+    }
     next();
   } catch {
     res.status(401).json({ message: 'Invalid or expired token' });
   }
 };
 
+// superadmin always passes; everyone else must be in the list
 export const allowRoles = (...roles) => (req, res, next) =>
-  roles.includes(req.user.role)
+  req.user.role === 'superadmin' || roles.includes(req.user.role)
     ? next()
-    : res.status(403).json({ message: 'Forbidden' });
+    : res.status(403).json({ message: 'You do not have permission to do this' });

@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+export const ROLES = ['superadmin', 'admin', 'teacher', 'accountant'];
+
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, lowercase: true },
+  name: { type: String, required: true, trim: true },
+  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
   password: { type: String, required: true, select: false },
-  role: {
-    type: String,
-    enum: ['superadmin', 'admin', 'teacher', 'accountant'],
-    default: 'admin',
-  },
+  role: { type: String, enum: ROLES, default: 'teacher' },
+  active: { type: Boolean, default: true },
 }, { timestamps: true });
 
 userSchema.pre('save', async function () {

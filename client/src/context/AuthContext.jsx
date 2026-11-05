@@ -22,8 +22,11 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  // superadmin passes every check, otherwise the role must be in the list
+  const can = (roles = []) => !!user && (user.role === 'superadmin' || roles.includes(user.role));
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, can }}>
       {children}
     </AuthContext.Provider>
   );
