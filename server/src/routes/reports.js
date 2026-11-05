@@ -4,6 +4,8 @@ import { Student, FeeItem, Payment } from '../models/school.js';
 const r = Router();
 const TERMS = ['Term 1', 'Term 2', 'Term 3'];
 const TZ = 'Africa/Nairobi';
+const LEFT = ['Passed Out', 'Transferred']; // students who are no longer in school
+
 const thisYear = () =>
   Number(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, year: 'numeric' }).format(new Date()));
 
@@ -13,7 +15,10 @@ r.get('/defaulters', async (req, res) => {
   const year = Number(req.query.year) || thisYear();
   const cls = req.query.class;
 
-  const students = await Student.find(cls ? { class: cls } : {}).lean();
+  const students = await Student.find({
+    ...(cls ? { class: cls } : {}),
+    status: { $nin: LEFT },
+  }).lean();
 
   const feeRows = await FeeItem.aggregate([
     { $match: { term } },
@@ -46,9 +51,12 @@ r.get('/defaulters', async (req, res) => {
   res.json(rows);
 });
 
-// Students in a class (or everyone, grouped by class)
+// Active students in a class (or all classes)
 r.get('/class-list', async (req, res) => {
-  const filter = req.query.class ? { class: req.query.class } : {};
+  const filter = {
+    status: { $nin: LEFT },
+    ...(req.query.class ? { class: req.query.class } : {}),
+  };
   const students = await Student.find(filter).sort({ class: 1, name: 1 }).lean();
   res.json(students.map((s) => ({ _id: s._id, admNo: s.admNo, name: s.name, class: s.class })));
 });

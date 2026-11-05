@@ -21,6 +21,9 @@ import Receipt from './pages/Receipt';
 import Statement from './pages/Statement';
 import Payments from './pages/Payments';
 import Reports from './pages/Reports';
+import Promotion from './pages/Promotion';
+import OpeningBalances from './pages/OpeningBalances';
+import ParentAccounts from './pages/ParentAccounts';
 
 export default function App() {
   return (
@@ -38,22 +41,25 @@ export default function App() {
             <Route element={<RoleRoute roles={['admin']} />}>
               <Route path="students/new" element={<NewAdmission />} />
               <Route path="students/enquiry" element={<Enquiry />} />
+              <Route path="students/promotion" element={<Promotion />} />
               <Route path="academics/subjects" element={<Subjects />} />
               <Route path="staff" element={<Staff />} />
               <Route path="users" element={<Users />} />
-              <Route path="fees/receipt/:receipt" element={<Receipt />} />
-  <Route path="fees/statement/:admNo" element={<Statement />} />
-            <Route path="fees/payments" element={<Payments />} />
-            <Route path="fees/reports" element={<Reports />} />
+              <Route path="parents" element={<ParentAccounts />} />
             </Route>
 
-            {/* fees */}
+            {/* fees: admin + accountant */}
             <Route element={<RoleRoute roles={['admin', 'accountant']} />}>
               <Route path="fees/structure" element={<FeeStructure />} />
               <Route path="fees/collection" element={<FeeCollection />} />
+              <Route path="fees/payments" element={<Payments />} />
+              <Route path="fees/receipt/:receipt" element={<Receipt />} />
+              <Route path="fees/statement/:admNo" element={<Statement />} />
+              <Route path="fees/reports" element={<Reports />} />
+              <Route path="fees/opening-balances" element={<OpeningBalances />} />
             </Route>
 
-            {/* academics */}
+            {/* academics: admin + teacher */}
             <Route element={<RoleRoute roles={['admin', 'teacher']} />}>
               <Route path="academics/attendance" element={<Attendance />} />
               <Route path="academics/marks" element={<Marks />} />

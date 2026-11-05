@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, UserPlus, Users, ClipboardList, Wallet,
   CalendarCheck, FileText, BookOpen, Receipt, Briefcase, ShieldCheck,
-  History, BarChart3,
+  History, BarChart3, GraduationCap, Landmark, UserCheck,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -19,11 +19,13 @@ const menu = [
     { to: '/students/enquiry', label: 'Admission Enquiry', icon: ClipboardList, roles: ADMIN },
     { to: '/students/new', label: 'New Admission', icon: UserPlus, roles: ADMIN },
     { to: '/students', label: 'All Students', icon: Users, roles: ALL },
+    { to: '/students/promotion', label: 'Promotion', icon: GraduationCap, roles: ADMIN },
   ]},
   { section: 'Fees', items: [
     { to: '/fees/structure', label: 'Fee Structure', icon: Receipt, roles: FEES },
     { to: '/fees/collection', label: 'Fee Collection', icon: Wallet, roles: FEES },
     { to: '/fees/payments', label: 'Payment History', icon: History, roles: FEES },
+    { to: '/fees/opening-balances', label: 'Opening Balances', icon: Landmark, roles: FEES },
     { to: '/fees/reports', label: 'Reports', icon: BarChart3, roles: FEES },
   ]},
   { section: 'Academics', items: [
@@ -36,6 +38,7 @@ const menu = [
   ]},
   { section: 'Administration', items: [
     { to: '/users', label: 'Users & Roles', icon: ShieldCheck, roles: ADMIN },
+    { to: '/parents', label: 'Parent Accounts', icon: UserCheck, roles: ADMIN },
   ]},
 ];
 

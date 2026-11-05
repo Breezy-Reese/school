@@ -49,10 +49,32 @@ export const Payment = model('Payment', new Schema({
   name: String,
   class: String,
   term: { type: String, default: 'Term 1' },
+  paymentDate: Date,   // real date of payment (can be in a previous year)
+  termFee: Number,     // fee due for that term at the time of payment
   amount: { type: Number, required: true, min: 1 },
   method: String,
   ref: String,
+  collectedBy: String,
 }, opts));
+
+export const Promotion = model('Promotion', new Schema({
+  admNo: String,
+  name: String,
+  fromClass: String,
+  toClass: String,   // 'Graduated' when a student leaves
+  year: Number,
+  doneBy: String,
+}, opts));
+
+const arrearsSchema = new Schema({
+  admNo: { type: String, required: true },
+  year: { type: Number, required: true },   // the year the balance is brought into
+  amount: { type: Number, required: true }, // positive = owed, negative = credit
+  note: String,
+  doneBy: String,
+}, opts);
+arrearsSchema.index({ admNo: 1, year: 1 }, { unique: true });
+export const Arrears = model('Arrears', arrearsSchema);
 
 export const Subject = model('Subject', new Schema({
   name: { type: String, required: true, unique: true },
@@ -82,6 +104,7 @@ const markSchema = new Schema({
   subject: { type: String, required: true },
   admNo: { type: String, required: true },
   score: { type: Number, min: 0, max: 100 },
+  status: { type: String, default: 'active' },
 }, opts);
 markSchema.index({ exam: 1, subject: 1, admNo: 1 }, { unique: true });
 export const Mark = model('Mark', markSchema);

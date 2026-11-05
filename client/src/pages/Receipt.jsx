@@ -31,7 +31,7 @@ export default function Receipt() {
   if (error) return <ErrorMsg>{error}</ErrorMsg>;
   if (!d) return <p className="text-sm text-slate-400">Loading...</p>;
 
-  const { payment: p, student, year, due, paid, balance } = d;
+  const { payment: p, student, year, bf, due, paid, balance } = d;
   const date = new Date(p.paymentDate || p.createdAt);
 
   return (
@@ -41,7 +41,7 @@ export default function Receipt() {
         <button onClick={() => window.print()} className={`${btn} flex items-center gap-2`}><Printer size={16} /> Print receipt</button>
       </div>
 
-      <div className="bg-white border border-slate-300 rounded-lg p-8 print:border-0 print:p-0">
+      <div className="print-area bg-white border border-slate-300 rounded-lg p-8">
         <div className="text-center border-b-2 border-slate-800 pb-4 mb-5">
           <h1 className="text-2xl font-bold uppercase tracking-wide">{SCHOOL.name}</h1>
           <p className="text-xs text-slate-600">{SCHOOL.address} • Tel: {SCHOOL.phone} • {SCHOOL.email}</p>
@@ -67,7 +67,10 @@ export default function Receipt() {
         </div>
 
         <div className="grid grid-cols-3 gap-3 text-center text-sm mb-8">
-          <div className="border border-slate-200 rounded p-2"><p className="text-xs text-slate-500">{p.term} fees</p><p className="font-semibold">{kes(due)}</p></div>
+          <div className="border border-slate-200 rounded p-2">
+            <p className="text-xs text-slate-500">{bf ? 'Fees + balance b/f' : `${p.term} fees`}</p>
+            <p className="font-semibold">{kes(due)}</p>
+          </div>
           <div className="border border-slate-200 rounded p-2"><p className="text-xs text-slate-500">Paid to date</p><p className="font-semibold">{kes(paid)}</p></div>
           <div className="border border-slate-200 rounded p-2"><p className="text-xs text-slate-500">Balance</p><p className="font-semibold">{kes(balance)}</p></div>
         </div>

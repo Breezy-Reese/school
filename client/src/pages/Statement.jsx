@@ -16,6 +16,9 @@ export default function Statement() {
   const [error, setError] = useState('');
   const { data: years } = useFetch('/payments/years');
 
+  // Include next year so balances brought forward can be viewed after promotion
+  const yearOptions = [...new Set([...years, new Date().getFullYear() + 1])].sort((a, b) => b - a);
+
   useEffect(() => {
     api.get(`/payments/statement/${admNo}`, { params: { term, year } })
       .then((r) => { setD(r.data); setError(''); })
@@ -25,7 +28,7 @@ export default function Statement() {
   if (error) return <ErrorMsg>{error}</ErrorMsg>;
   if (!d) return <p className="text-sm text-slate-400">Loading...</p>;
 
-  const { student, items, payments, due, paid, balance } = d;
+  const { student, items, payments, due, paid, balance, termFee, broughtForward } = d;
 
   return (
     <div className="max-w-3xl">
@@ -33,7 +36,7 @@ export default function Statement() {
         <Link to="/fees/collection" className={`${btnGhost} flex items-center gap-2`}><ArrowLeft size={16} /> Back</Link>
         <div className="flex items-center gap-3">
           <select value={year} onChange={(e) => setYear(e.target.value)} className={`${field} !w-28 !py-1.5`}>
-            {years.map((y) => <option key={y}>{y}</option>)}
+            {yearOptions.map((y) => <option key={y}>{y}</option>)}
           </select>
           <select value={term} onChange={(e) => setTerm(e.target.value)} className={`${field} !w-32 !py-1.5`}>
             {['Term 1', 'Term 2', 'Term 3'].map((t) => <option key={t}>{t}</option>)}
@@ -57,12 +60,32 @@ export default function Statement() {
 
         <h3 className="font-semibold text-sm mb-2">Fees charged</h3>
         <table className="w-full text-sm mb-6">
-          <thead><tr className="border-b border-slate-300 text-left text-xs uppercase text-slate-500"><th className="py-1">Item</th><th className="py-1 text-right">Amount</th></tr></thead>
+          <thead>
+            <tr className="border-b border-slate-300 text-left text-xs uppercase text-slate-500">
+              <th className="py-1">Item</th><th className="py-1 text-right">Amount</th>
+            </tr>
+          </thead>
           <tbody>
-            {items.length === 0 && due === 0 && <tr><td colSpan={2} className="py-3 text-slate-400">No fee recorded for this class and term.</td></tr>}
-            {items.length === 0 && due > 0 && <tr className="border-b border-slate-100"><td className="py-1.5">Term fee (as recorded)</td><td className="py-1.5 text-right">{kes(due)}</td></tr>}
+            {broughtForward !== 0 && (
+              <tr className="border-b border-slate-100">
+                <td className="py-1.5">Balance brought forward</td>
+                <td className="py-1.5 text-right">{kes(broughtForward)}</td>
+              </tr>
+            )}
+            {items.length === 0 && termFee === 0 && broughtForward === 0 && (
+              <tr><td colSpan={2} className="py-3 text-slate-400">No fee recorded for this class and term.</td></tr>
+            )}
+            {items.length === 0 && termFee > 0 && (
+              <tr className="border-b border-slate-100">
+                <td className="py-1.5">Term fee (as recorded)</td>
+                <td className="py-1.5 text-right">{kes(termFee)}</td>
+              </tr>
+            )}
             {items.map((i) => (
-              <tr key={i._id} className="border-b border-slate-100"><td className="py-1.5">{i.head}</td><td className="py-1.5 text-right">{kes(i.amount)}</td></tr>
+              <tr key={i._id} className="border-b border-slate-100">
+                <td className="py-1.5">{i.head}</td>
+                <td className="py-1.5 text-right">{kes(i.amount)}</td>
+              </tr>
             ))}
             <tr className="font-bold"><td className="py-2">Total charged</td><td className="py-2 text-right">{kes(due)}</td></tr>
           </tbody>
@@ -70,7 +93,12 @@ export default function Statement() {
 
         <h3 className="font-semibold text-sm mb-2">Payments received</h3>
         <table className="w-full text-sm mb-6">
-          <thead><tr className="border-b border-slate-300 text-left text-xs uppercase text-slate-500"><th className="py-1">Date</th><th className="py-1">Receipt</th><th className="py-1">Method</th><th className="py-1">Reference</th><th className="py-1 text-right">Amount</th></tr></thead>
+          <thead>
+            <tr className="border-b border-slate-300 text-left text-xs uppercase text-slate-500">
+              <th className="py-1">Date</th><th className="py-1">Receipt</th><th className="py-1">Method</th>
+              <th className="py-1">Reference</th><th className="py-1 text-right">Amount</th>
+            </tr>
+          </thead>
           <tbody>
             {payments.length === 0 && <tr><td colSpan={5} className="py-3 text-slate-400">No payments for this term.</td></tr>}
             {payments.map((p) => (
