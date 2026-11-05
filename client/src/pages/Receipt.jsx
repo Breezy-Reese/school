@@ -31,12 +31,13 @@ export default function Receipt() {
   if (error) return <ErrorMsg>{error}</ErrorMsg>;
   if (!d) return <p className="text-sm text-slate-400">Loading...</p>;
 
-  const { payment: p, student, due, paid, balance } = d;
+  const { payment: p, student, year, due, paid, balance } = d;
+  const date = new Date(p.paymentDate || p.createdAt);
 
   return (
     <div className="max-w-2xl">
       <div className="no-print flex items-center justify-between mb-4">
-        <Link to="/fees/collection" className={`${btnGhost} flex items-center gap-2`}><ArrowLeft size={16} /> Back</Link>
+        <Link to="/fees/payments" className={`${btnGhost} flex items-center gap-2`}><ArrowLeft size={16} /> Back</Link>
         <button onClick={() => window.print()} className={`${btn} flex items-center gap-2`}><Printer size={16} /> Print receipt</button>
       </div>
 
@@ -49,14 +50,14 @@ export default function Receipt() {
 
         <div className="flex justify-between mb-5 text-sm">
           <p><span className="text-slate-500">Receipt No:</span> <span className="font-bold">{p.receipt}</span></p>
-          <p><span className="text-slate-500">Date:</span> <span className="font-medium">{new Date(p.createdAt).toLocaleString('en-GB')}</span></p>
+          <p><span className="text-slate-500">Date:</span> <span className="font-medium">{date.toLocaleDateString('en-GB')}</span></p>
         </div>
 
         <Row label="Received from">{student?.name || p.name}</Row>
         <Row label="Admission No">{p.admNo}</Row>
         <Row label="Class">{p.class}</Row>
-        <Row label="Term">{p.term}</Row>
-        <Row label="Payment method">{p.method}</Row>
+        <Row label="Term">{p.term}, {year}</Row>
+        <Row label="Payment method">{p.method || 'Not recorded'}</Row>
         <Row label="Reference">{p.ref}</Row>
 
         <div className="my-6 p-4 bg-slate-50 border border-slate-300 rounded text-center">
