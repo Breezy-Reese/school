@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ParentRoute from './components/ParentRoute';
 import RoleRoute from './components/RoleRoute';
 import Layout from './components/Layout';
+import PortalLayout from './components/PortalLayout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Account from './pages/Account';
@@ -24,6 +26,10 @@ import Reports from './pages/Reports';
 import Promotion from './pages/Promotion';
 import OpeningBalances from './pages/OpeningBalances';
 import ParentAccounts from './pages/ParentAccounts';
+import PortalHome from './pages/PortalHome';
+import PortalPayments from './pages/PortalPayments';
+import PortalStatement from './pages/PortalStatement';
+import PortalReceipt from './pages/PortalReceipt';
 
 export default function App() {
   return (
@@ -31,8 +37,19 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+
+          {/* Parent portal: parents only, no staff sidebar */}
+          <Route path="/portal" element={<ParentRoute><PortalLayout /></ParentRoute>}>
+            <Route index element={<PortalHome />} />
+            <Route path="payments/:admNo" element={<PortalPayments />} />
+            <Route path="statement/:admNo" element={<PortalStatement />} />
+            <Route path="receipt/:receipt" element={<PortalReceipt />} />
+            <Route path="account" element={<Account />} />
+          </Route>
+
+          {/* Staff app */}
           <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            {/* every logged-in role */}
+            {/* every staff role */}
             <Route index element={<Dashboard />} />
             <Route path="account" element={<Account />} />
             <Route path="students" element={<Students />} />
