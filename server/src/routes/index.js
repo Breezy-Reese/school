@@ -13,6 +13,7 @@ import promotionRoutes from './promotions.js';
 import arrearsRoutes from './arrears.js';
 import parentRoutes from './parents.js';
 import portalRoutes from './portal.js';
+import mpesaPortalRoutes from './mpesaPortal.js';
 
 // 'superadmin' always passes, so it never needs listing
 const ADMIN = ['admin'];
@@ -23,7 +24,9 @@ const ALL = ['admin', 'teacher', 'accountant'];
 const router = Router();
 router.use(protect);
 
-// Parent portal: the only API parents can reach
+// Parent portal: the only API parents can reach.
+// '/portal/mpesa' must come BEFORE '/portal'.
+router.use('/portal/mpesa', mpesaPortalRoutes);
 router.use('/portal', portalRoutes);
 
 // Everything below is staff only. Parents are blocked here.

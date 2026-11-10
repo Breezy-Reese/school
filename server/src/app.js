@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/auth.js';
 import apiRoutes from './routes/index.js';
+import mpesaCallbackRoutes from './routes/mpesaCallback.js';
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -32,6 +33,10 @@ app.use('/api/auth/login', rateLimit({
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 app.use('/api/auth', authRoutes);
+
+// Safaricom calls this without a login token, so it must sit BEFORE the guarded /api routes
+app.use('/api/mpesa', mpesaCallbackRoutes);
+
 app.use('/api', apiRoutes);
 
 app.use('/api', (req, res) => res.status(404).json({ message: 'Not found' }));

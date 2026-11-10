@@ -30,6 +30,7 @@ import PortalHome from './pages/PortalHome';
 import PortalPayments from './pages/PortalPayments';
 import PortalStatement from './pages/PortalStatement';
 import PortalReceipt from './pages/PortalReceipt';
+import PortalPay from './pages/PortalPay';
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           {/* Parent portal: parents only, no staff sidebar */}
           <Route path="/portal" element={<ParentRoute><PortalLayout /></ParentRoute>}>
             <Route index element={<PortalHome />} />
+            <Route path="pay/:admNo" element={<PortalPay />} />
             <Route path="payments/:admNo" element={<PortalPayments />} />
             <Route path="statement/:admNo" element={<PortalStatement />} />
             <Route path="receipt/:receipt" element={<PortalReceipt />} />
