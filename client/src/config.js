@@ -1,15 +1,15 @@
 export const SCHOOL = {
-  name: 'Your School Name',
-  address: 'P.O. Box 000-00000, Town',
-  phone: '0700 000 000',
-  email: 'info@yourschool.ac.ke',
+  name: 'Havrard International School',
+  address: 'P.O. Box 115-90128, Havard',
+  phone: '0768378553',
+  email: 'harvardhighschool@school.ac.ke',
 };
 export const PAYMENT_METHODS = [
   {
     id: 'mpesa',
     type: 'mpesa',
     title: 'M-Pesa Paybill',
-    paybill: '000000',
+    paybill: '522533',
     steps: [
       'Go to M-Pesa, then Lipa na M-Pesa, then Pay Bill.',
       'Enter the Business Number shown here.',
@@ -21,10 +21,10 @@ export const PAYMENT_METHODS = [
     id: 'bank',
     type: 'bank',
     title: 'Bank deposit or transfer',
-    bankName: 'Your Bank',
-    accountName: 'Your School Name',
-    accountNumber: '0000000000',
-    branch: 'Town Branch',
+    bankName: 'KCB',
+    accountName: 'Shinestar',
+    accountNumber: '7986962',
+    branch: 'Mtito Andei',
     note: "Write the student's admission number as the reference.",
   },
   {
