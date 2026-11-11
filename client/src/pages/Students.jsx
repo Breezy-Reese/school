@@ -36,7 +36,7 @@ export default function Students() {
           rows={rows}
           columns={[
             { label: 'Adm No', key: 'admNo' },
-            { label: 'Name', key: 'name' },
+            { label: 'Name', render: (s) => <Link to={`/students/${s._id}`} className="text-blue-600 hover:underline">{s.name}</Link> },
             { label: 'Class', key: 'class' },
             { label: 'Gender', key: 'gender' },
             { label: 'Phone', key: 'phone' },

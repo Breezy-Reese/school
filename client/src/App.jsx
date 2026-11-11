@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Account from './pages/Account';
 import Users from './pages/Users';
 import Students from './pages/Students';
+import StudentProfile from './pages/StudentProfile';
 import NewAdmission from './pages/NewAdmission';
 import Enquiry from './pages/Enquiry';
 import FeeStructure from './pages/FeeStructure';
@@ -55,6 +56,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="account" element={<Account />} />
             <Route path="students" element={<Students />} />
+            <Route path="students/:id" element={<StudentProfile />} />
 
             {/* admin only (superadmin always allowed) */}
             <Route element={<RoleRoute roles={['admin']} />}>
