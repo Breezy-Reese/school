@@ -19,7 +19,7 @@ const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
 app.set('trust proxy', 1); // Render sits behind a proxy, so rate limiting sees the real IP
 app.use(helmet());
 app.use(cors({ origin: allowedOrigins }));
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 app.use(morgan(isProd ? 'combined' : 'dev'));
 
 // Slow down password guessing: 20 failed logins per 15 minutes per IP

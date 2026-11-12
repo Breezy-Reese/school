@@ -27,7 +27,7 @@ r.get('/', async (req, res) => {
   // ---- Students: every role ----
   const [active, newAdmissions, byClass, recent] = await Promise.all([
     Student.countDocuments({ status: 'Active' }),
-    Student.countDocuments({ createdAt: { $gte: yearStart } }),
+    Student.countDocuments({ admissionDate: { $gte: yearStart } }),
     Student.aggregate([
       { $match: { status: 'Active' } },
       { $group: { _id: '$class', count: { $sum: 1 } } },

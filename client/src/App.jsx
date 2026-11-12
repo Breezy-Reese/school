@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { SettingsProvider } from './context/SettingsContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ParentRoute from './components/ParentRoute';
 import RoleRoute from './components/RoleRoute';
@@ -11,6 +12,7 @@ import Account from './pages/Account';
 import Users from './pages/Users';
 import Students from './pages/Students';
 import StudentProfile from './pages/StudentProfile';
+import ImportStudents from './pages/ImportStudents';
 import NewAdmission from './pages/NewAdmission';
 import Enquiry from './pages/Enquiry';
 import FeeStructure from './pages/FeeStructure';
@@ -27,6 +29,7 @@ import Reports from './pages/Reports';
 import Promotion from './pages/Promotion';
 import OpeningBalances from './pages/OpeningBalances';
 import ParentAccounts from './pages/ParentAccounts';
+import Settings from './pages/Settings';
 import PortalHome from './pages/PortalHome';
 import PortalPayments from './pages/PortalPayments';
 import PortalStatement from './pages/PortalStatement';
@@ -36,61 +39,65 @@ import PortalPay from './pages/PortalPay';
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
+      <SettingsProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
 
-          {/* Parent portal: parents only, no staff sidebar */}
-          <Route path="/portal" element={<ParentRoute><PortalLayout /></ParentRoute>}>
-            <Route index element={<PortalHome />} />
-            <Route path="pay/:admNo" element={<PortalPay />} />
-            <Route path="payments/:admNo" element={<PortalPayments />} />
-            <Route path="statement/:admNo" element={<PortalStatement />} />
-            <Route path="receipt/:receipt" element={<PortalReceipt />} />
-            <Route path="account" element={<Account />} />
-          </Route>
-
-          {/* Staff app */}
-          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            {/* every staff role */}
-            <Route index element={<Dashboard />} />
-            <Route path="account" element={<Account />} />
-            <Route path="students" element={<Students />} />
-            <Route path="students/:id" element={<StudentProfile />} />
-
-            {/* admin only (superadmin always allowed) */}
-            <Route element={<RoleRoute roles={['admin']} />}>
-              <Route path="students/new" element={<NewAdmission />} />
-              <Route path="students/enquiry" element={<Enquiry />} />
-              <Route path="students/promotion" element={<Promotion />} />
-              <Route path="academics/subjects" element={<Subjects />} />
-              <Route path="staff" element={<Staff />} />
-              <Route path="users" element={<Users />} />
-              <Route path="parents" element={<ParentAccounts />} />
+            {/* Parent portal: parents only, no staff sidebar */}
+            <Route path="/portal" element={<ParentRoute><PortalLayout /></ParentRoute>}>
+              <Route index element={<PortalHome />} />
+              <Route path="pay/:admNo" element={<PortalPay />} />
+              <Route path="payments/:admNo" element={<PortalPayments />} />
+              <Route path="statement/:admNo" element={<PortalStatement />} />
+              <Route path="receipt/:receipt" element={<PortalReceipt />} />
+              <Route path="account" element={<Account />} />
             </Route>
 
-            {/* fees: admin + accountant */}
-            <Route element={<RoleRoute roles={['admin', 'accountant']} />}>
-              <Route path="fees/structure" element={<FeeStructure />} />
-              <Route path="fees/collection" element={<FeeCollection />} />
-              <Route path="fees/payments" element={<Payments />} />
-              <Route path="fees/receipt/:receipt" element={<Receipt />} />
-              <Route path="fees/statement/:admNo" element={<Statement />} />
-              <Route path="fees/reports" element={<Reports />} />
-              <Route path="fees/opening-balances" element={<OpeningBalances />} />
-            </Route>
+            {/* Staff app */}
+            <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+              {/* every staff role */}
+              <Route index element={<Dashboard />} />
+              <Route path="account" element={<Account />} />
+              <Route path="students" element={<Students />} />
+              <Route path="students/:id" element={<StudentProfile />} />
 
-            {/* academics: admin + teacher */}
-            <Route element={<RoleRoute roles={['admin', 'teacher']} />}>
-              <Route path="academics/attendance" element={<Attendance />} />
-              <Route path="academics/marks" element={<Marks />} />
-            </Route>
+              {/* admin only (superadmin always allowed) */}
+              <Route element={<RoleRoute roles={['admin']} />}>
+                <Route path="students/new" element={<NewAdmission />} />
+                <Route path="students/import" element={<ImportStudents />} />
+                <Route path="students/enquiry" element={<Enquiry />} />
+                <Route path="students/promotion" element={<Promotion />} />
+                <Route path="academics/subjects" element={<Subjects />} />
+                <Route path="staff" element={<Staff />} />
+                <Route path="users" element={<Users />} />
+                <Route path="parents" element={<ParentAccounts />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
 
-            {/* keep this last */}
-            <Route path="*" element={<Placeholder />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+              {/* fees: admin + accountant */}
+              <Route element={<RoleRoute roles={['admin', 'accountant']} />}>
+                <Route path="fees/structure" element={<FeeStructure />} />
+                <Route path="fees/collection" element={<FeeCollection />} />
+                <Route path="fees/payments" element={<Payments />} />
+                <Route path="fees/receipt/:receipt" element={<Receipt />} />
+                <Route path="fees/statement/:admNo" element={<Statement />} />
+                <Route path="fees/reports" element={<Reports />} />
+                <Route path="fees/opening-balances" element={<OpeningBalances />} />
+              </Route>
+
+              {/* academics: admin + teacher */}
+              <Route element={<RoleRoute roles={['admin', 'teacher']} />}>
+                <Route path="academics/attendance" element={<Attendance />} />
+                <Route path="academics/marks" element={<Marks />} />
+              </Route>
+
+              {/* keep this last */}
+              <Route path="*" element={<Placeholder />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SettingsProvider>
     </AuthProvider>
   );
 }

@@ -14,6 +14,8 @@ import arrearsRoutes from './arrears.js';
 import parentRoutes from './parents.js';
 import portalRoutes from './portal.js';
 import mpesaPortalRoutes from './mpesaPortal.js';
+import settingsRoutes from './settings.js';
+import importRoutes from './import.js';
 
 // 'superadmin' always passes, so it never needs listing
 const ADMIN = ['admin'];
@@ -56,5 +58,7 @@ router.use('/attendance', allowRoles(...ACADEMIC), attendanceRoutes);
 router.use('/marks', allowRoles(...ACADEMIC), marksRoutes);
 router.use('/users', allowRoles(...ADMIN), userRoutes);
 router.use('/parents', allowRoles(...ADMIN), parentRoutes);
+router.use('/settings', settingsRoutes);
+router.use('/import', allowRoles(...ADMIN), importRoutes);
 
 export default router;
