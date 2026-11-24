@@ -2,8 +2,8 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, UserPlus, Users, ClipboardList, Wallet,
   CalendarCheck, FileText, BookOpen, Receipt, Briefcase, ShieldCheck,
-  History, BarChart3, GraduationCap, Landmark, UserCheck, Settings,Upload,
-
+  History, BarChart3, GraduationCap, Landmark, UserCheck, Settings, Upload,
+  Archive, Layers, Banknote, Scale,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -19,9 +19,10 @@ const menu = [
   { section: 'Students', items: [
     { to: '/students/enquiry', label: 'Admission Enquiry', icon: ClipboardList, roles: ADMIN },
     { to: '/students/new', label: 'New Admission', icon: UserPlus, roles: ADMIN },
+    { to: '/students/import', label: 'Import Students', icon: Upload, roles: ADMIN },
     { to: '/students', label: 'All Students', icon: Users, roles: ALL },
     { to: '/students/promotion', label: 'Promotion', icon: GraduationCap, roles: ADMIN },
-    { to: '/students/import', label: 'Import Students', icon: Upload, roles: ADMIN },
+    { to: '/students/archive', label: 'Passed Out Archive', icon: Archive, roles: ADMIN },
   ]},
   { section: 'Fees', items: [
     { to: '/fees/structure', label: 'Fee Structure', icon: Receipt, roles: FEES },
@@ -30,10 +31,16 @@ const menu = [
     { to: '/fees/opening-balances', label: 'Opening Balances', icon: Landmark, roles: FEES },
     { to: '/fees/reports', label: 'Reports', icon: BarChart3, roles: FEES },
   ]},
+  { section: 'Finance', items: [
+    { to: '/finance/expenses', label: 'Expenses', icon: Banknote, roles: FEES },
+    { to: '/finance/income-expense', label: 'Income vs Expense', icon: Scale, roles: FEES },
+  ]},
   { section: 'Academics', items: [
     { to: '/academics/attendance', label: 'Attendance', icon: CalendarCheck, roles: ACADEMIC },
+    { to: '/academics/attendance-report', label: 'Attendance Report', icon: ClipboardList, roles: ACADEMIC },
     { to: '/academics/marks', label: 'Marks Entry', icon: FileText, roles: ACADEMIC },
     { to: '/academics/subjects', label: 'Subjects', icon: BookOpen, roles: ADMIN },
+    { to: '/academics/classes', label: 'Classes', icon: Layers, roles: ADMIN },
   ]},
   { section: 'Staff / Payroll', items: [
     { to: '/staff', label: 'Staff Management', icon: Briefcase, roles: ADMIN },

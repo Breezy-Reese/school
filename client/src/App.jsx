@@ -13,14 +13,19 @@ import Users from './pages/Users';
 import Students from './pages/Students';
 import StudentProfile from './pages/StudentProfile';
 import ImportStudents from './pages/ImportStudents';
+import Archive from './pages/Archive';
 import NewAdmission from './pages/NewAdmission';
 import Enquiry from './pages/Enquiry';
 import FeeStructure from './pages/FeeStructure';
 import FeeCollection from './pages/FeeCollection';
 import Attendance from './pages/Attendance';
+import AttendanceReport from './pages/AttendanceReport';
 import Marks from './pages/Marks';
 import Subjects from './pages/Subjects';
+import Classes from './pages/Classes';
 import Staff from './pages/Staff';
+import Expenses from './pages/Expenses';
+import IncomeExpense from './pages/IncomeExpense';
 import Placeholder from './pages/Placeholder';
 import Receipt from './pages/Receipt';
 import Statement from './pages/Statement';
@@ -66,16 +71,18 @@ export default function App() {
               <Route element={<RoleRoute roles={['admin']} />}>
                 <Route path="students/new" element={<NewAdmission />} />
                 <Route path="students/import" element={<ImportStudents />} />
+                <Route path="students/archive" element={<Archive />} />
                 <Route path="students/enquiry" element={<Enquiry />} />
                 <Route path="students/promotion" element={<Promotion />} />
                 <Route path="academics/subjects" element={<Subjects />} />
+                <Route path="academics/classes" element={<Classes />} />
                 <Route path="staff" element={<Staff />} />
                 <Route path="users" element={<Users />} />
                 <Route path="parents" element={<ParentAccounts />} />
                 <Route path="settings" element={<Settings />} />
               </Route>
 
-              {/* fees: admin + accountant */}
+              {/* fees and finance: admin + accountant */}
               <Route element={<RoleRoute roles={['admin', 'accountant']} />}>
                 <Route path="fees/structure" element={<FeeStructure />} />
                 <Route path="fees/collection" element={<FeeCollection />} />
@@ -84,11 +91,14 @@ export default function App() {
                 <Route path="fees/statement/:admNo" element={<Statement />} />
                 <Route path="fees/reports" element={<Reports />} />
                 <Route path="fees/opening-balances" element={<OpeningBalances />} />
+                <Route path="finance/expenses" element={<Expenses />} />
+                <Route path="finance/income-expense" element={<IncomeExpense />} />
               </Route>
 
               {/* academics: admin + teacher */}
               <Route element={<RoleRoute roles={['admin', 'teacher']} />}>
                 <Route path="academics/attendance" element={<Attendance />} />
+                <Route path="academics/attendance-report" element={<AttendanceReport />} />
                 <Route path="academics/marks" element={<Marks />} />
               </Route>
 
