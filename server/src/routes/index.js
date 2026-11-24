@@ -1,3 +1,4 @@
+
 import { Router } from 'express';
 import { protect, allowRoles } from '../middleware/auth.js';
 import crud from './crud.js';
@@ -17,29 +18,52 @@ import mpesaPortalRoutes from './mpesaPortal.js';
 import settingsRoutes from './settings.js';
 import importRoutes from './import.js';
 
-// 'superadmin' always passes, so it never needs listing
 const ADMIN = ['admin'];
 const FEES = ['admin', 'accountant'];
 const ACADEMIC = ['admin', 'teacher'];
 const ALL = ['admin', 'teacher', 'accountant'];
 
 const router = Router();
+
 router.use(protect);
 
-// Parent portal: the only API parents can reach.
-// '/portal/mpesa' must come BEFORE '/portal'.
+// Parent portal routes
 router.use('/portal/mpesa', mpesaPortalRoutes);
 router.use('/portal', portalRoutes);
 
-// Everything below is staff only. Parents are blocked here.
-router.use((req, res, next) =>
-  req.user?.role === 'parent' ? res.status(403).json({ message: 'Not allowed' }) : next());
+// Allow authenticated users, including parents, to READ settings.
+// settings.js still restricts PUT requests to administrators.
+router.use('/settings', settingsRoutes);
 
-router.use('/classes', crud(SchoolClass, { sort: { order: 1 }, roles: { read: ALL, write: ADMIN } }));
-router.use('/subjects', crud(Subject, { sort: { name: 1 }, roles: { read: ALL, write: ADMIN } }));
-router.use('/staff', crud(Staff, { sort: { name: 1 }, roles: { read: ADMIN, write: ADMIN } }));
-router.use('/fee-items', crud(FeeItem, { sort: { class: 1, head: 1 }, roles: { read: FEES, write: FEES } }));
+// Block parents from all remaining staff routes.
+router.use((req, res, next) =>
+  req.user?.role === 'parent'
+    ? res.status(403).json({ message: 'Not allowed' })
+    : next()
+);
+
+router.use('/classes', crud(SchoolClass, {
+  sort: { order: 1 },
+  roles: { read: ALL, write: ADMIN }
+}));
+
+router.use('/subjects', crud(Subject, {
+  sort: { name: 1 },
+  roles: { read: ALL, write: ADMIN }
+}));
+
+router.use('/staff', crud(Staff, {
+  sort: { name: 1 },
+  roles: { read: ADMIN, write: ADMIN }
+}));
+
+router.use('/fee-items', crud(FeeItem, {
+  sort: { class: 1, head: 1 },
+  roles: { read: FEES, write: FEES }
+}));
+
 router.use('/dashboard', dashboardRoutes);
+
 router.use('/enquiries', crud(Enquiry, {
   sort: { createdAt: -1 },
   roles: { read: ADMIN, write: ADMIN },
@@ -49,7 +73,7 @@ router.use('/enquiries', crud(Enquiry, {
   }),
 }));
 
-router.use('/students', studentRoutes);                              // guards inside the file
+router.use('/students', studentRoutes);
 router.use('/payments', allowRoles(...FEES), paymentRoutes);
 router.use('/reports', allowRoles(...FEES), reportRoutes);
 router.use('/arrears', allowRoles(...FEES), arrearsRoutes);
@@ -58,7 +82,6 @@ router.use('/attendance', allowRoles(...ACADEMIC), attendanceRoutes);
 router.use('/marks', allowRoles(...ACADEMIC), marksRoutes);
 router.use('/users', allowRoles(...ADMIN), userRoutes);
 router.use('/parents', allowRoles(...ADMIN), parentRoutes);
-router.use('/settings', settingsRoutes);
 router.use('/import', allowRoles(...ADMIN), importRoutes);
 
 export default router;
