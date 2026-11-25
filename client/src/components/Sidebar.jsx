@@ -3,7 +3,7 @@ import {
   LayoutDashboard, UserPlus, Users, ClipboardList, Wallet,
   CalendarCheck, FileText, BookOpen, Receipt, Briefcase, ShieldCheck,
   History, BarChart3, GraduationCap, Landmark, UserCheck, Settings, Upload,
-  Archive, Layers, Banknote, Scale,
+  Archive, Layers, Banknote, Scale, Trophy,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
