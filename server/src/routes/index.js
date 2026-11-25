@@ -13,12 +13,14 @@ import promotionRoutes from './promotions.js';
 import arrearsRoutes from './arrears.js';
 import parentRoutes from './parents.js';
 import portalRoutes from './portal.js';
+import portalAcademicsRoutes from './portalAcademics.js';
 import mpesaPortalRoutes from './mpesaPortal.js';
 import settingsRoutes from './settings.js';
 import importRoutes from './import.js';
 import classesRoutes from './classes.js';
 import expenseRoutes from './expenses.js';
 import financeRoutes from './finance.js';
+import resultsRoutes from './results.js';
 
 // 'superadmin' always passes, so it never needs listing
 const ADMIN = ['admin'];
@@ -29,8 +31,9 @@ const ALL = ['admin', 'teacher', 'accountant'];
 const router = Router();
 router.use(protect);
 
-// Parent portal: the only API parents can reach ('/portal/mpesa' must come before '/portal')
+// Parent portal: the only API parents can reach. The specific paths must come before '/portal'.
 router.use('/portal/mpesa', mpesaPortalRoutes);
+router.use('/portal/academics', portalAcademicsRoutes);
 router.use('/portal', portalRoutes);
 router.use('/settings', settingsRoutes);
 
@@ -62,6 +65,7 @@ router.use('/finance', allowRoles(...FEES), financeRoutes);
 router.use('/promotions', allowRoles(...ADMIN), promotionRoutes);
 router.use('/attendance', allowRoles(...ACADEMIC), attendanceRoutes);
 router.use('/marks', allowRoles(...ACADEMIC), marksRoutes);
+router.use('/results', allowRoles(...ACADEMIC), resultsRoutes);         // release is admin-only inside
 router.use('/users', allowRoles(...ADMIN), userRoutes);
 router.use('/parents', allowRoles(...ADMIN), parentRoutes);
 

@@ -1,14 +1,12 @@
 import 'dotenv/config';
 import app from './src/app.js';
 import connectDB from './src/config/db.js';
+import { Mark } from './src/models/school.js';
 
-const PORT = process.env.PORT || 5000; // Render sets PORT itself
-
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('Could not connect to the database:', err.message);
-    process.exit(1);
-  });
+connectDB().then(async () => {
+  // Marks are now unique per year and term, so replace the old index
+  try { await Mark.syncIndexes(); } catch (err) { console.error('Could not sync Mark indexes:', err.message); }
+  app.listen(process.env.PORT, () =>
+    console.log(`Server running on port ${process.env.PORT}`)
+  );
+});

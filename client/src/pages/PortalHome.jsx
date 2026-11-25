@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Smartphone, Landmark, Banknote, Copy, Check, FileText, Receipt, ChevronRight,
+  CalendarCheck, GraduationCap,
 } from 'lucide-react';
 import { ErrorMsg } from '../components/UI';
 import useFetch from '../hooks/useFetch';

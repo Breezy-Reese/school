@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { PageHeader, Card, Label, Table, Badge, ErrorMsg, btn, field } from '../components/UI';
 import useFetch from '../hooks/useFetch';
 import api from '../api/axios';
+import { TERMS, currentTerm, currentYear, yearOptions } from '../utils/term';
+
+const EXAMS = ['Opener', 'Mid-Term', 'End-Term'];
 
 const grade = (m) => {
   if (m === '' || m === undefined) return '-';
@@ -18,6 +21,8 @@ export default function Marks() {
   const [cls, setCls] = useState('');
   const [subject, setSubject] = useState('');
   const [exam, setExam] = useState('Mid-Term');
+  const [term, setTerm] = useState(currentTerm());
+  const [year, setYear] = useState(String(currentYear()));
   const [marks, setMarks] = useState({});
   const [saved, setSaved] = useState(false);
   const [msg, setMsg] = useState('');
@@ -31,11 +36,11 @@ export default function Marks() {
 
   useEffect(() => {
     if (!cls || !subject) return;
-    api.get('/marks', { params: { class: cls, subject, exam } }).then((r) => {
+    api.get('/marks', { params: { class: cls, subject, exam, term, year } }).then((r) => {
       setMarks(Object.fromEntries(r.data.map((m) => [m.admNo, String(m.score)])));
       setSaved(false);
     });
-  }, [cls, subject, exam]);
+  }, [cls, subject, exam, term, year]);
 
   const change = (id, value) => {
     if (value !== '' && (Number(value) < 0 || Number(value) > 100)) return;
@@ -46,7 +51,7 @@ export default function Marks() {
   const save = async () => {
     try {
       await api.put('/marks', {
-        class: cls, subject, exam,
+        class: cls, subject, exam, term, year,
         marks: list.map((s) => ({ admNo: s.admNo, score: marks[s.admNo] ?? '' })),
       });
       setSaved(true); setMsg('');
@@ -59,7 +64,7 @@ export default function Marks() {
       <ErrorMsg>{msg}</ErrorMsg>
 
       <Card>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <Label text="Class">
             <select value={cls} onChange={(e) => setCls(e.target.value)} className={field}>
               {classes.map((c) => <option key={c._id}>{c.name}</option>)}
@@ -72,13 +77,23 @@ export default function Marks() {
           </Label>
           <Label text="Exam">
             <select value={exam} onChange={(e) => setExam(e.target.value)} className={field}>
-              {['Opener', 'Mid-Term', 'End-Term'].map((x) => <option key={x}>{x}</option>)}
+              {EXAMS.map((x) => <option key={x}>{x}</option>)}
+            </select>
+          </Label>
+          <Label text="Term">
+            <select value={term} onChange={(e) => setTerm(e.target.value)} className={field}>
+              {TERMS.map((t) => <option key={t}>{t}</option>)}
+            </select>
+          </Label>
+          <Label text="Year">
+            <select value={year} onChange={(e) => setYear(e.target.value)} className={field}>
+              {yearOptions().map((y) => <option key={y}>{y}</option>)}
             </select>
           </Label>
         </div>
       </Card>
 
-      <Card title={`${cls} • ${subject} • ${exam}`}>
+      <Card title={`${cls} • ${subject} • ${exam} • ${term} ${year}`}>
         <Table
           rows={list}
           empty="No active students in this class."

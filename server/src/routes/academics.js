@@ -75,15 +75,31 @@ attendanceRoutes.get('/report', async (req, res) => {
 
 export const marksRoutes = Router();
 
+const TERMS = ['Term 1', 'Term 2', 'Term 3'];
+const EXAMS = ['Opener', 'Mid-Term', 'End-Term'];
+
 marksRoutes.get('/', async (req, res) => {
-  const { class: cls, subject, exam } = req.query;
-  res.json(await Mark.find({ class: cls, subject, exam }));
+  const { class: cls, subject, exam, term } = req.query;
+  const year = Number(req.query.year);
+  if (!cls || !subject || !EXAMS.includes(exam) || !TERMS.includes(term) || !year) {
+    return res.status(400).json({ message: 'Choose a class, subject, exam, term and year' });
+  }
+  res.json(await Mark.find({ class: cls, subject, exam, term, year }));
 });
 
 marksRoutes.put('/', async (req, res) => {
-  const { class: cls, subject, exam, marks } = req.body;
+  const { class: cls, subject, exam, term, marks } = req.body;
+  const year = Number(req.body.year);
+  if (!cls || !subject || !EXAMS.includes(exam) || !TERMS.includes(term) || !year || !Array.isArray(marks)) {
+    return res.status(400).json({ message: 'Choose a class, subject, exam, term and year' });
+  }
+  for (const m of marks) {
+    if (m.score !== '' && m.score != null && !(Number(m.score) >= 0 && Number(m.score) <= 100)) {
+      return res.status(400).json({ message: 'Marks must be between 0 and 100' });
+    }
+  }
   const ops = marks.map(({ admNo, score }) => {
-    const filter = { exam, subject, admNo };
+    const filter = { year, term, exam, subject, admNo };
     return score === '' || score == null
       ? { deleteOne: { filter } }
       : { updateOne: { filter, update: { $set: { class: cls, score: Number(score) } }, upsert: true } };

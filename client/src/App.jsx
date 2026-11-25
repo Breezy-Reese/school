@@ -21,6 +21,8 @@ import FeeCollection from './pages/FeeCollection';
 import Attendance from './pages/Attendance';
 import AttendanceReport from './pages/AttendanceReport';
 import Marks from './pages/Marks';
+import Results from './pages/Results';
+import ReportCard from './pages/ReportCard';
 import Subjects from './pages/Subjects';
 import Classes from './pages/Classes';
 import Staff from './pages/Staff';
@@ -40,6 +42,8 @@ import PortalPayments from './pages/PortalPayments';
 import PortalStatement from './pages/PortalStatement';
 import PortalReceipt from './pages/PortalReceipt';
 import PortalPay from './pages/PortalPay';
+import PortalAttendance from './pages/PortalAttendance';
+import PortalResults from './pages/PortalResults';
 
 export default function App() {
   return (
@@ -56,6 +60,8 @@ export default function App() {
               <Route path="payments/:admNo" element={<PortalPayments />} />
               <Route path="statement/:admNo" element={<PortalStatement />} />
               <Route path="receipt/:receipt" element={<PortalReceipt />} />
+              <Route path="attendance/:admNo" element={<PortalAttendance />} />
+              <Route path="results/:admNo" element={<PortalResults />} />
               <Route path="account" element={<Account />} />
             </Route>
 
@@ -100,6 +106,8 @@ export default function App() {
                 <Route path="academics/attendance" element={<Attendance />} />
                 <Route path="academics/attendance-report" element={<AttendanceReport />} />
                 <Route path="academics/marks" element={<Marks />} />
+                <Route path="academics/results" element={<Results />} />
+                <Route path="academics/report-card/:admNo" element={<ReportCard />} />
               </Route>
 
               {/* keep this last */}

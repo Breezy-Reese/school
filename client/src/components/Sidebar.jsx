@@ -41,6 +41,7 @@ const menu = [
     { to: '/academics/marks', label: 'Marks Entry', icon: FileText, roles: ACADEMIC },
     { to: '/academics/subjects', label: 'Subjects', icon: BookOpen, roles: ADMIN },
     { to: '/academics/classes', label: 'Classes', icon: Layers, roles: ADMIN },
+    { to: '/academics/results', label: 'Class Results', icon: Trophy, roles: ACADEMIC },
   ]},
   { section: 'Staff / Payroll', items: [
     { to: '/staff', label: 'Staff Management', icon: Briefcase, roles: ADMIN },

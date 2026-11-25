@@ -100,11 +100,12 @@ export const Attendance = model('Attendance', attendanceSchema);
 
 const markSchema = new Schema({
   class: String,
+  year: { type: Number, required: true },
+  term: { type: String, required: true },
   exam: { type: String, required: true },
   subject: { type: String, required: true },
   admNo: { type: String, required: true },
   score: { type: Number, min: 0, max: 100 },
-  status: { type: String, default: 'active' },
 }, opts);
-markSchema.index({ exam: 1, subject: 1, admNo: 1 }, { unique: true });
+markSchema.index({ year: 1, term: 1, exam: 1, subject: 1, admNo: 1 }, { unique: true });
 export const Mark = model('Mark', markSchema);
