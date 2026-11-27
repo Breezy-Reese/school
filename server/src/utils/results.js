@@ -101,3 +101,18 @@ export async function buildClassResults({ cls, term, year }) {
     classMean: students.length ? round1(mean(students.map((s) => s.mean))) : null,
   };
 }
+// Every student's report card for one class, in name order (for printing a whole class)
+export async function buildClassReportCards({ cls, term, year }) {
+  const summary = summarise(await Mark.find({ class: cls, term, year }).lean());
+  const { position, outOf } = rank(summary);
+  const names = await Student.find({ admNo: { $in: [...summary.keys()] } }).select('admNo name').lean();
+  const nameOf = Object.fromEntries(names.map((s) => [s.admNo, s.name]));
+  return [...summary.entries()]
+    .map(([admNo, s]) => ({
+      student: { admNo, name: nameOf[admNo] || admNo, class: cls },
+      term, year, exams: EXAMS,
+      subjects: s.rows, total: s.total, mean: s.mean, grade: s.grade,
+      position: position[admNo], outOf,
+    }))
+    .sort((a, b) => a.student.name.localeCompare(b.student.name));
+}

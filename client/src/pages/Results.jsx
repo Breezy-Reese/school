@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Printer } from 'lucide-react';
-import { PageHeader, Card, Table, Badge, ErrorMsg, btn, field } from '../components/UI';
+import { PageHeader, Card, Table, Badge, ErrorMsg, btn, btnGhost, field } from '../components/UI';
 import useFetch from '../hooks/useFetch';
 import { useAuth } from '../context/AuthContext';
 import { useSettings } from '../context/SettingsContext';

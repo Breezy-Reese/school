@@ -23,11 +23,17 @@ import AttendanceReport from './pages/AttendanceReport';
 import Marks from './pages/Marks';
 import Results from './pages/Results';
 import ReportCard from './pages/ReportCard';
+import ClassReportCards from './pages/ClassReportCards';
 import Subjects from './pages/Subjects';
 import Classes from './pages/Classes';
 import Staff from './pages/Staff';
+import Payroll from './pages/Payroll';
+import PayrollRun from './pages/PayrollRun';
+import Payslips from './pages/Payslips';
 import Expenses from './pages/Expenses';
 import IncomeExpense from './pages/IncomeExpense';
+import SmsReminders from './pages/SmsReminders';
+import AuditLog from './pages/AuditLog';
 import Placeholder from './pages/Placeholder';
 import Receipt from './pages/Receipt';
 import Statement from './pages/Statement';
@@ -83,9 +89,13 @@ export default function App() {
                 <Route path="academics/subjects" element={<Subjects />} />
                 <Route path="academics/classes" element={<Classes />} />
                 <Route path="staff" element={<Staff />} />
+                <Route path="payroll" element={<Payroll />} />
+                <Route path="payroll/:id" element={<PayrollRun />} />
+                <Route path="payroll/:id/payslips" element={<Payslips />} />
                 <Route path="users" element={<Users />} />
                 <Route path="parents" element={<ParentAccounts />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="audit" element={<AuditLog />} />
               </Route>
 
               {/* fees and finance: admin + accountant */}
@@ -97,6 +107,7 @@ export default function App() {
                 <Route path="fees/statement/:admNo" element={<Statement />} />
                 <Route path="fees/reports" element={<Reports />} />
                 <Route path="fees/opening-balances" element={<OpeningBalances />} />
+                <Route path="fees/sms" element={<SmsReminders />} />
                 <Route path="finance/expenses" element={<Expenses />} />
                 <Route path="finance/income-expense" element={<IncomeExpense />} />
               </Route>
@@ -108,6 +119,7 @@ export default function App() {
                 <Route path="academics/marks" element={<Marks />} />
                 <Route path="academics/results" element={<Results />} />
                 <Route path="academics/report-card/:admNo" element={<ReportCard />} />
+                <Route path="academics/report-cards" element={<ClassReportCards />} />
               </Route>
 
               {/* keep this last */}

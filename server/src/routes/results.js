@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Release from '../models/Release.js';
 import { allowRoles } from '../middleware/auth.js';
-import { parseTermYear, buildReportCard, buildClassResults } from '../utils/results.js';
+import { parseTermYear, buildReportCard, buildClassResults, buildClassReportCards } from '../utils/results.js';
 
 const r = Router();
 
@@ -10,6 +10,12 @@ r.get('/class', async (req, res) => {
   const p = parseTermYear(req.query);
   if (!cls || !p) return res.status(400).json({ message: 'Choose a class, term and year' });
   res.json(await buildClassResults({ cls, ...p }));
+});
+r.get('/class-cards', async (req, res) => {
+  const cls = String(req.query.class || '').trim();
+  const p = parseTermYear(req.query);
+  if (!cls || !p) return res.status(400).json({ message: 'Choose a class, term and year' });
+  res.json(await buildClassReportCards({ cls, ...p }));
 });
 
 r.get('/report-card/:admNo', async (req, res) => {

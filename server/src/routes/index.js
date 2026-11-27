@@ -21,6 +21,11 @@ import classesRoutes from './classes.js';
 import expenseRoutes from './expenses.js';
 import financeRoutes from './finance.js';
 import resultsRoutes from './results.js';
+import auditMiddleware from '../middleware/audit.js';
+import auditRoutes from './audit.js';
+import smsRoutes from './sms.js';
+import payrollRoutes from './payroll.js';
+
 
 // 'superadmin' always passes, so it never needs listing
 const ADMIN = ['admin'];
@@ -36,6 +41,7 @@ router.use('/portal/mpesa', mpesaPortalRoutes);
 router.use('/portal/academics', portalAcademicsRoutes);
 router.use('/portal', portalRoutes);
 router.use('/settings', settingsRoutes);
+router.use(auditMiddleware);
 
 // Everything below is staff only. Parents are blocked here.
 router.use((req, res, next) =>
@@ -62,6 +68,9 @@ router.use('/reports', allowRoles(...FEES), reportRoutes);
 router.use('/arrears', allowRoles(...FEES), arrearsRoutes);
 router.use('/expenses', allowRoles(...FEES), expenseRoutes);
 router.use('/finance', allowRoles(...FEES), financeRoutes);
+router.use('/sms', allowRoles(...FEES), smsRoutes);
+router.use('/payroll', allowRoles(...ADMIN), payrollRoutes);
+router.use('/audit', allowRoles(...ADMIN), auditRoutes);
 router.use('/promotions', allowRoles(...ADMIN), promotionRoutes);
 router.use('/attendance', allowRoles(...ACADEMIC), attendanceRoutes);
 router.use('/marks', allowRoles(...ACADEMIC), marksRoutes);
